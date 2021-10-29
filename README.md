@@ -27,3 +27,14 @@ Symfony based note API. Provides API endpoints to create, read, update and delet
 7. Create Pull Request on your own repository describing changes. Add manual testing scenarios for each functionality in PR.
 8. (Optional) Write unit or web tests.
 9. Send us a link to your PR.
+
+## Access
+
+### PHPMyAdmin
+	- Host: 127.0.0.1
+	- Port: 8080
+
+	How to log into PHPMyAdmin screen:
+		 - Go to PHPMyAdmin login screen
+		 - Enter 'db' as the 'hostname'
+		 - Enter username and password as specified in docker-compose.yml
