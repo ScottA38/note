@@ -1,0 +1,5 @@
+{
+    "require": {
+        "mmucklo/grid-bundle": "^7.3"
+    }
+}

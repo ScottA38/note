@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Note List{% endblock %}
+
+{% block body %}
+	<div id="notes">Loading...</div>
+	
+    <!-- Symfony datatables dependency -->
+	<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.js"></script>
+	<script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
+    <script>	
+	$(function() {
+	    jQuery('#notes').initDataTables({{ datatable_settings(datatable) }}, { searching: true, dom: 'Bfrtip' });
+	});
+	</script>
+{% endblock %}

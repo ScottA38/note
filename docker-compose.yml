@@ -26,7 +26,7 @@ services:
       context: .
       dockerfile: ./php-fpm/Dockerfile
     ports:
-      - "9000:9000"
+      - "9005:9000"
     volumes:
       - .:/var/www/symfony
     depends_on:

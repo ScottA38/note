@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Note Info{% endblock %}
+
+{% block body %}
+	<style>
+		span, p {
+			margin-left: 4em;
+			font-family: 'arial';
+		}
+		.heading {
+			font-family: 'Gill Sans';
+		}
+	</style>
+	
+	<h1 class="action heading">{{ action }}</h1>
+	<div class="title_wrapper">
+		<h4 class="heading">Title:</h4>
+		<span class="title">{{ note_title }}</span>
+	</div>
+	<div class="text_wrapper">
+		<h4 class="heading">Text:</h4>
+		<p class="text">{{ note_text }}</p>
+	</div>
+{% endblock %}

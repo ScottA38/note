@@ -7,13 +7,16 @@
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
+            <!-- Symfony datatables dependency -->
+			<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.2.1/dt-1.10.16/datatables.min.css"/>
         {% endblock %}
 
         {% block javascripts %}
             {#{{ encore_entry_script_tags('app') }}#}
+            
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block body %}{% endblock %}    
     </body>
 </html>
