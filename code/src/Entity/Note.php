@@ -30,7 +30,7 @@ class Note
 
     /**
      * @ORM\Column(type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     * @ORM\Version
+     * 
      * @var \DateTime
      */
     private $created_at;
@@ -40,8 +40,8 @@ class Note
      */
     private $text;
     
-    public function __construct() {
-        $this->created_at = new \DateTime();
+    public function __construct(\DateTime $date) {
+        $this->created_at = $date;
     }
 
     public function getId(): ?int

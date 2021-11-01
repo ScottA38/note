@@ -8,7 +8,6 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Note;
-use App\Repository\NoteRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -96,7 +95,7 @@ class NoteController extends AbstractController
         
         if ($note === null) {
             throw new EntityNotFoundException(sprintf('No such entity found for id \'%s\'', $id));
-        } else if (!count(array_intersect(static::UPDATEABALE_FIELDS, array_values($params)))) {
+        } else if (!count(array_intersect(static::UPDATEABALE_FIELDS, array_keys($params)))) {
             throw new ParameterNotFoundException(implode(', ', static::UPDATEABALE_FIELDS));    
         }
         
@@ -174,6 +173,7 @@ class NoteController extends AbstractController
         )
         ->handleRequest($request);
        
+        // If AJAX call made from JS, then return content only, not rendered entity
         if ($table->isCallback()) {
             return $table->getResponse();
         }
