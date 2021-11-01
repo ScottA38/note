@@ -8,11 +8,12 @@ namespace App\Entity;
 
 use App\Repository\NoteRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=NoteRepository::class)
  */
-class Note
+class Note implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -77,4 +78,14 @@ class Note
 
         return $this;
     }
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'text' => $this->text,
+            'created_at' => $this->created_at
+        ];
+    }
+
 }

@@ -18,10 +18,47 @@ use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\DataTableFactory;
 use Doctrine\Orm\QueryBuilder;
+use DeviceDetector\DeviceDetector;
 
 class NoteController extends AbstractController
 {       
     const UPDATEABALE_FIELDS = ['title', 'text'];
+    const TWIG_INFO_TEMPLATE = 'note/note_info.html.twig';
+    
+    protected function renderResponse(
+        Request $request, 
+        Note $note, 
+        array $twigParams = [],
+        string $responseCode = Response::HTTP_OK, 
+        array $responseArgs = []
+    )
+    {
+        $userAgent = $request->headers->get('User-Agent');
+        if (stripos($userAgent, 'postman') !== false) {
+            $responseArgs['content-type'] = 'application/json';
+            $entityData = [
+                'action' => $request->attributes->get('_route'),
+                'entity' => $note
+            ]; 
+            
+            return new Response(
+                json_encode($entityData),
+                $responseCode,
+                $responseArgs
+            );
+        }
+        $responseArgs['content-type'] = 'text/html';
+        $view = $this->renderView(
+            static::TWIG_INFO_TEMPLATE,
+            $twigParams
+        );
+        
+        return new Response(
+            $view,
+            $responseCode,
+            $responseArgs
+        );
+    }
     
     /**
      * @Route("/notes/add", name="create_note", methods={"PUT"})
@@ -44,10 +81,15 @@ class NoteController extends AbstractController
         
         $em->flush();
         
-        return new Response(
-            sprintf('Saved new note with id %s', $note->getId()), 
-            Response::HTTP_CREATED,
-            ['content-type' => 'text/html']
+        return $this->renderResponse(
+            $request, 
+            $note, 
+            [
+                'action' => sprintf('Created Note with id %s', $note->getId()),
+                'note_title' => $note->getTitle(),
+                'note_text' => $note->getText()
+            ],
+            Response::HTTP_CREATED
         );
     }
     
@@ -58,7 +100,7 @@ class NoteController extends AbstractController
      * 
      * @return Response
      */
-    public function getNoteById(int $id): Response 
+    public function getNoteById(Request $request, int $id): Response 
     {
         $note = $this->getDoctrine()
         ->getRepository(Note::class)
@@ -68,8 +110,9 @@ class NoteController extends AbstractController
             throw new EntityNotFoundException(sprintf('No such entity found for id \'%s\'', $id));
         }
         
-        return $this->render(
-            'note/note_info.html.twig',
+        return $this->renderResponse(
+            $request, 
+            $note,
             [
                 'action' => 'Info',
                 'note_title' => $note->getTitle(),
@@ -108,20 +151,15 @@ class NoteController extends AbstractController
         
         $em->persist($note);
         $em->flush();
-        
-        $view = $this->renderView(
-            'note/note_info.html.twig',
+                
+        return $this->renderResponse(
+            $request, 
+            $note, 
             [
                 'action' => 'Updated',
                 'note_title' => $note->getTitle(),
                 'note_text' => $note->getText()
             ]
-        );
-        
-        return new Response(
-            $view, 
-            Response::HTTP_OK,
-            ['content-type' => 'text/html']
         ); 
     }
     
@@ -132,7 +170,7 @@ class NoteController extends AbstractController
     * 
     * @return Response
     */
-    public function deleteNoteById(int $id): Response
+    public function deleteNoteById(Request $request, int $id): Response
     {
         $em  = $this->getDoctrine()->getManager();
         /** @var Note $note **/
@@ -147,6 +185,16 @@ class NoteController extends AbstractController
             sprintf('Deleted entity with id \'%s\'', $id),
             Response::HTTP_OK
         );
+        
+        return $this->renderResponse(
+            $request,
+            $note,
+            [
+                'action' => sprintf('Deleted entity with id \'%s\'', $id),
+                'note_title' => $note->getTitle(),
+                'note_text' => $note->getText()
+            ]
+        ); 
     }
     
     /**
