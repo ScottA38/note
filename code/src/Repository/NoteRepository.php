@@ -1,4 +1,8 @@
 <?php
+/**
+ * @author Scott Anderson <94andersonsc@googlemail.com
+ * @license MIT
+ */
 
 namespace App\Repository;
 
