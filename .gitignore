@@ -27,3 +27,6 @@
 /.buildpath
 /.project
 /.settings
+
+#Docker
+/mysql/

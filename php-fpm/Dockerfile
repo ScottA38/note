@@ -7,6 +7,7 @@ RUN apt-get -y update \
   && docker-php-ext-enable opcache \
   && docker-php-ext-install pdo_mysql \
   && docker-php-ext-install zip
+RUN apt-get install -y nano telnet
 COPY --from=composer /usr/bin/composer /usr/bin/composer
 RUN curl -sS https://get.symfony.com/cli/installer | bash \
  && mv /root/.symfony/bin/symfony /usr/local/bin/symfony
