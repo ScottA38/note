@@ -18,7 +18,6 @@ use Omines\DataTablesBundle\Column\TextColumn;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\DataTableFactory;
 use Doctrine\Orm\QueryBuilder;
-use DeviceDetector\DeviceDetector;
 
 class NoteController extends AbstractController
 {       
@@ -31,10 +30,10 @@ class NoteController extends AbstractController
         array $twigParams = [],
         string $responseCode = Response::HTTP_OK, 
         array $responseArgs = []
-    )
+    ): Response
     {
         $userAgent = $request->headers->get('User-Agent');
-        if (stripos($userAgent, 'postman') !== false) {
+        if (stripos($userAgent, 'postman') !== false || stripos($userAgent, 'browserkit') !== false) {
             $responseArgs['content-type'] = 'application/json';
             $entityData = [
                 'action' => $request->attributes->get('_route'),
@@ -139,9 +138,11 @@ class NoteController extends AbstractController
         if ($note === null) {
             throw new EntityNotFoundException(sprintf('No such entity found for id \'%s\'', $id));
         } else if (!count(array_intersect(static::UPDATEABALE_FIELDS, array_keys($params)))) {
-            throw new ParameterNotFoundException(implode(', ', static::UPDATEABALE_FIELDS));    
+            throw new ParameterNotFoundException(
+                sprintf('%s: %s', implode(', ', static::UPDATEABALE_FIELDS), implode(', ', $params))
+            );    
         }
-        
+
         foreach ($params as $key => $param) {
             if (in_array($key, static::UPDATEABALE_FIELDS)) {
                 $method = 'set' . $key;
@@ -177,6 +178,10 @@ class NoteController extends AbstractController
         $note = $this->getDoctrine()
         ->getRepository(Note::class)
         ->find($id);
+        
+        if ($note === null) {
+            throw new EntityNotFoundException(sprintf('No such entity found for id \'%s\'', $id));
+        }
         
         $em->remove($note);
         $em->flush();

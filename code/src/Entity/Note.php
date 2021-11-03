@@ -41,8 +41,10 @@ class Note implements JsonSerializable
      */
     private $text;
     
-    public function __construct(\DateTime $date) {
-        $this->created_at = $date;
+    public function __construct() {
+        if(!isset($this->created_at)) {
+            $this->created_at = new \DateTime();
+        }
     }
 
     public function getId(): ?int
