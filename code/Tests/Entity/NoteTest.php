@@ -4,13 +4,16 @@
  * @license MIT
  */
 
-namespace tests\Entity;
+namespace Tests\Entity;
 
 use PHPUnit\Framework\TestCase;
 use App\Entity\Note;
 
 class NoteTest extends TestCase
 {
+    /**
+     * @test
+     */
     public function canUpdateTitle()
     {
         $note = new Note();
