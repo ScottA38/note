@@ -102,11 +102,10 @@ class NoteControllerTest extends WebTestCase
     
     /**
      * @test
+     * @expectedException Doctrine\Orm\EntityNotFoundException
      */
     public function cannotDeleteNonExistentEntity()
-    {
-        $this->expectException(EntityNotFoundException::class);
-        
+    {   
         $this->httpClient->request('DELETE', '/notes/1000');
     }
 

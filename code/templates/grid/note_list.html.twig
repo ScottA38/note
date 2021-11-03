@@ -10,7 +10,7 @@
 	<script src="{{ asset('bundles/datatables/js/datatables.js') }}"></script>
     <script>	
 	$(function() {
-	    jQuery('#notes').initDataTables({{ datatable_settings(datatable) }}, { searching: true, dom: 'Bfrtip' });
+	    jQuery('#notes').initDataTables({{ datatable_settings(datatable) }}, { searching: true, dom: 'Bflrtip' });
 	});
 	</script>
 {% endblock %}
