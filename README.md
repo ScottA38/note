@@ -1,6 +1,6 @@
 # Note API
 
-Symfony based note API. Provides API endpoints to create, read, update and delete notes.
+Symfony based note API. Provides JSON API endpoints to create, read, update and delete notes.
 
 ## Setup
 
@@ -17,7 +17,7 @@ Symfony based note API. Provides API endpoints to create, read, update and delet
 2. Add phpmyadmin container to docker compose. Document access in README.md
 3. Create Note entity. Note has id, title, created time and text.
 4. Make sure to generate migrations for database tables/schema.
-5. Write code for all routes in NoteController so that application fulfills CRUD tasks.
+5. Write code for all routes in NoteController so that application fulfills CRUD tasks using JSON format.
    1. `/notes/add` - Add new note.
    2. `/notes/{id}` - Get note by id.
    3. `/notes/{id}` - Put an update to note by id.
